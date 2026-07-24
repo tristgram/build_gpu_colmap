@@ -49,63 +49,17 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # CUDA 12.8.1 builds (no GUI - for pycolmap/automation)
+          # Take Zero / Intake variant: the ONLY build this fork produces.
+          # Caspar is deliberately OFF: Intake solves with the OPENCV camera model, which Caspar
+          # does not support, and dropping it also drops the Symforce LGPL-adjacent code from the
+          # shipped binary. Ceres master + cuDSS provides the (verified 9.7x) GPU bundle adjustment.
           - os: windows-2022
             cuda: true
             cuda_version: '12.8.1'
             cudss: true
-            caspar: true
+            caspar: false
             gui: false
             name: "Windows CUDA12.8+cuDSS"
-          - os: windows-2022
-            cuda: true
-            cuda_version: '12.8.1'
-            cudss: false
-            caspar: true
-            gui: false
-            name: "Windows CUDA12.8"
-          - os: ubuntu-22.04
-            cuda: true
-            cuda_version: '12.8.1'
-            cudss: true
-            caspar: true
-            gui: false
-            name: "Linux CUDA12.8+cuDSS"
-          - os: ubuntu-22.04
-            cuda: true
-            cuda_version: '12.8.1'
-            cudss: false
-            caspar: true
-            gui: false
-            name: "Linux CUDA12.8"
-          # CPU builds (no GUI)
-          - os: windows-2022
-            cuda: false
-            cudss: false
-            caspar: false
-            gui: false
-            name: "Windows CPU"
-          - os: ubuntu-22.04
-            cuda: false
-            cudss: false
-            caspar: false
-            gui: false
-            name: "Linux CPU"
-          # GUI builds (Windows only - for interactive use)
-          - os: windows-2022
-            cuda: true
-            cuda_version: '12.8.1'
-            cudss: true
-            caspar: true
-            gui: true
-            name: "Windows CUDA12.8+cuDSS+GUI"
-          - os: windows-2022
-            cuda: true
-            cuda_version: '12.8.1'
-            cudss: false
-            caspar: true
-            gui: true
-            name: "Windows CUDA12.8+GUI"
 
     steps:
       - name: Checkout repository
