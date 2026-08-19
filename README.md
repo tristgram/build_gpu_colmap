@@ -45,6 +45,7 @@ colmap automatic_reconstructor --workspace_path ./project --image_path ./images
 colmap global_mapper --database_path ./database.db --image_path ./images --output_path ./sparse
 
 # ALIKED + LightGlue (learned features)
+# (models auto-download on first use; to pre-fetch for offline machines: .\scripts_windows\download_models.ps1)
 colmap feature_extractor --database_path ./database.db --image_path ./images --FeatureExtraction.type ALIKED_N16ROT
 colmap exhaustive_matcher --database_path ./database.db --FeatureMatching.type ALIKED_LIGHTGLUE
 colmap mapper --database_path ./database.db --image_path ./images --output_path ./sparse
@@ -66,6 +67,7 @@ colmap automatic_reconstructor --workspace_path ./project --image_path ./images
 colmap global_mapper --database_path ./database.db --image_path ./images --output_path ./sparse
 
 # ALIKED + LightGlue (learned features)
+# (models auto-download on first use; to pre-fetch for offline machines: ./scripts_linux/download_models.sh)
 colmap feature_extractor --database_path ./database.db --image_path ./images --FeatureExtraction.type ALIKED_N16ROT
 colmap exhaustive_matcher --database_path ./database.db --FeatureMatching.type ALIKED_LIGHTGLUE
 colmap mapper --database_path ./database.db --image_path ./images --output_path ./sparse
