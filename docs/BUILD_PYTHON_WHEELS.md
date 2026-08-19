@@ -281,7 +281,7 @@ winget install Python.Python.3.13
 
 ### Linux - Multi-Version Build
 
-**Option 1: New unified script (recommended)**
+**Build script (all Python versions)**
 ```bash
 # Build COLMAP first
 ./scripts_linux/build_colmap.sh
@@ -304,12 +304,6 @@ winget install Python.Python.3.13
 - Builds wheel for each version sequentially
 - Shows success/failure summary for each version
 - All wheels output to `third_party/colmap-for-pycolmap/wheelhouse/`
-
-**Option 2: Legacy wrapper script (still available)**
-```bash
-# Build wheels for all detected versions
-./scripts_linux/build_pycolmap_wheels_all.sh
-```
 
 **Install multiple Python versions (Ubuntu):**
 ```bash
