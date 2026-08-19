@@ -305,6 +305,14 @@ winget install Python.Python.3.13
 - Shows success/failure summary for each version
 - All wheels output to `third_party/colmap-for-pycolmap/wheelhouse/`
 
+**Alternative: multi-version driver for the regular COLMAP tree**
+```bash
+# Loops build_pycolmap_wheel.sh (regular COLMAP tree) over all detected
+# versions; a failing Python version doesn't abort the others, and a
+# per-version success/failure summary is printed at the end
+./scripts_linux/build_pycolmap_wheels_all.sh
+```
+
 **Install multiple Python versions (Ubuntu):**
 ```bash
 sudo apt-get install python3.9 python3.9-dev
