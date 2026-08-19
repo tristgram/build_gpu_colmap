@@ -45,7 +45,6 @@ colmap automatic_reconstructor --workspace_path ./project --image_path ./images
 colmap global_mapper --database_path ./database.db --image_path ./images --output_path ./sparse
 
 # ALIKED + LightGlue (learned features)
-# (models auto-download on first use; to pre-fetch for offline machines: .\scripts_windows\download_models.ps1)
 colmap feature_extractor --database_path ./database.db --image_path ./images --FeatureExtraction.type ALIKED_N16ROT
 colmap exhaustive_matcher --database_path ./database.db --FeatureMatching.type ALIKED_LIGHTGLUE
 colmap mapper --database_path ./database.db --image_path ./images --output_path ./sparse
@@ -67,7 +66,6 @@ colmap automatic_reconstructor --workspace_path ./project --image_path ./images
 colmap global_mapper --database_path ./database.db --image_path ./images --output_path ./sparse
 
 # ALIKED + LightGlue (learned features)
-# (models auto-download on first use; to pre-fetch for offline machines: ./scripts_linux/download_models.sh)
 colmap feature_extractor --database_path ./database.db --image_path ./images --FeatureExtraction.type ALIKED_N16ROT
 colmap exhaustive_matcher --database_path ./database.db --FeatureMatching.type ALIKED_LIGHTGLUE
 colmap mapper --database_path ./database.db --image_path ./images --output_path ./sparse
@@ -227,6 +225,8 @@ See [CLAUDE.md](.claude/CLAUDE.md) for detailed build instructions.
 # Linux
 ./scripts_linux/build.sh --config Release
 ```
+
+**Pre-fetching learned-feature models:** builds with download support fetch the ALIKED/LightGlue ONNX models on first use. From a repo clone, you can pre-fetch the ALIKED-family models into the cache (e.g. for offline machines) with `.\scripts_windows\download_models.ps1` or `./scripts_linux/download_models.sh`.
 
 ## License
 
