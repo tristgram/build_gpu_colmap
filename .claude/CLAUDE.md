@@ -186,7 +186,7 @@ cmake .. \
 **Ceres:**
 - Uses `USE_CUDA=default` (not `CUDA_ENABLED`)
 - Auto-detects cuDSS via `cudss_DIR`
-- Patched for CUDA architecture 120 via `cmake/patch_ceres_arch.cmake`
+- Patched via `cmake/patch_ceres_suitesparse.cmake` so Ceres's FindSuiteSparse.cmake tolerates vcpkg's ALIAS targets
 
 **COLMAP:**
 - `CUDA_ENABLED=ON/OFF`
