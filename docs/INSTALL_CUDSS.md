@@ -61,9 +61,9 @@ cudss-windows-x86_64-0.7.0.39/
 **Step 2: Copy to CUDA Installation (Run PowerShell as Administrator)**
 
 ```powershell
-# Set paths
+# Set paths (uses your active CUDA installation so Step 3 verifies the same tree)
 $CudssExtractPath = "C:\path\to\extracted\cudss-windows-x86_64-0.7.0.39"
-$CudaPath = "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8"
+$CudaPath = if ($env:CUDA_PATH) { $env:CUDA_PATH } else { "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.8" }
 $CudaMajorVersion = "12"  # Use "13" for CUDA 13.x
 
 # Copy header files
@@ -104,7 +104,10 @@ cd cudss-linux-x86_64-0.7.0.39
 
 # Copy files to CUDA installation (requires sudo)
 sudo cp -r include/* /usr/local/cuda/include/
-sudo cp -r lib64/* /usr/local/cuda/lib64/
+
+# Libraries live in a per-CUDA-major-version directory (lib/12 for CUDA 12.x,
+# lib/13 for CUDA 13.x); very old archives used a flat lib64/ instead
+sudo cp -r lib/12/* /usr/local/cuda/lib64/
 
 # Update library cache
 sudo ldconfig
@@ -162,7 +165,7 @@ echo $CUDA_PATH
 
 **Good News:** The build scripts automatically copy cuDSS DLLs/libraries to the installation directory, so **no PATH configuration is needed** for builds created with this project!
 
-The build scripts (`build_colmap.ps1`, `build_glomap.ps1`, etc.) automatically:
+The build scripts (`build_colmap.ps1`, `build.ps1`, and their Linux counterparts) automatically:
 - Detect cuDSS installation location
 - Copy cuDSS DLLs (Windows) or shared libraries (Linux) to `build/install/*/bin` or `build/install/*/lib`
 - Make the installation self-contained

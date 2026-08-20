@@ -1,5 +1,5 @@
 # Fast Ceres Build Script - Uses Ninja and Maximum Parallelism
-# Usage: .\build_ceres_fast.ps1 [-Configuration Debug|Release] [-Clean]
+# Usage: .\build_ceres.ps1 [-Configuration Debug|Release] [-Clean]
 
 [CmdletBinding()]
 param(
@@ -16,7 +16,7 @@ if ($Help) {
     Write-Host @"
 Fast Ceres Build Script (Ninja + Max Parallelism)
 
-Usage: .\build_ceres_fast.ps1 [options]
+Usage: .\build_ceres.ps1 [options]
 
 Options:
   -Configuration <Debug|Release>  Build configuration (default: Release)
