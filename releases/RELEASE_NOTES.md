@@ -1,17 +1,39 @@
-# COLMAP Build v4.1.1
+# COLMAP Build v4.1.1-1
 
 This release provides GPU-accelerated builds of the official COLMAP 4.1.1 patch
 release for Windows and Linux, together with matching pycolmap wheels. All CUDA
 archives include Caspar GPU bundle adjustment.
 
 The COLMAP source is byte-identical to the upstream `4.1.1` tag (commit
-`a0d785fb`) and is stamped as `4.1.1`. Each artifact is accompanied by a
+`a0d785fb`) and is stamped as `4.1.1`; this build revision supersedes the
+v4.1.1 assets without any source change. Each artifact is accompanied by a
 `build_info.json` provenance record documenting the source commit, toolchain,
 CUDA and cuDSS versions, and enabled feature flags. A `SHA256SUMS.txt` file
 covering every published asset is included.
 
-Users of v4.1.0 are advised to upgrade. Release 4.1.1 resolves a significant
-regression in feature-matching throughput introduced in 4.1.0.
+Users of the v4.1.1 assets are advised to upgrade: earlier builds were produced
+without model download support, which rendered the learned-feature pipelines
+inoperable out of the box (see below). Users of v4.1.0 should upgrade in any
+case; release 4.1.1 resolves a significant regression in feature-matching
+throughput introduced in 4.1.0.
+
+## Changes in build revision v4.1.1-1
+
+- **Model download support is now enabled.** Previous builds were produced
+  without libcurl and OpenSSL, which compiled out both the automatic ONNX model
+  download and the model-cache lookup. As a result, the learned-feature
+  pipelines (ALIKED extractors, ALIKED and SIFT LightGlue matchers, and the
+  ONNX brute-force matcher) could not obtain their models. Binaries and wheels
+  in this release download the required models on first use, as documented.
+- The `download_models` helper scripts additionally pre-fetch
+  `sift-lightglue.onnx`, completing offline coverage of the default model set.
+- `build_pycolmap_wheels.sh` now proceeds past a failing Python version and
+  reports a per-version success and failure summary instead of aborting.
+- Windows builds were restored after an MSYS2 package rotation invalidated the
+  vcpkg `gmp` port; the affected package pin is supplied via an overlay port.
+- Repository maintenance: eleven orphaned build scripts and CMake patch files
+  were removed, and the build documentation was corrected (Linux build flags,
+  cuDSS installation guide, and wheel-building guide).
 
 ## Changes in COLMAP 4.1.1
 
