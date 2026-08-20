@@ -10,46 +10,49 @@ The wheel building scripts create self-contained `.whl` files that include all r
 
 **Windows:**
 - Python 3.9+ with pip
-- COLMAP already built (via `build_colmap.ps1`)
 - Visual Studio Build Tools (for native extensions)
 
 **Linux:**
 - Python 3.9+ with pip and development headers
-- COLMAP already built (via `build_colmap.sh`)
 - GCC compiler and build tools
+
+**Note on prior COLMAP builds:** the multi-version scripts (`build_pycolmap_wheels.ps1` / `build_pycolmap_wheels.sh`) build their own COLMAP from `third_party/colmap-for-pycolmap` — no prior COLMAP build is needed. Only the Linux single-version script (`build_pycolmap_wheel.sh`) builds against the regular COLMAP tree and requires `build_colmap.sh` to have been run first.
 
 ## Quick Start
 
 ### Windows
 
 ```powershell
-# 1. Build COLMAP
-.\scripts_windows\build_colmap.ps1
-
-# 2. Build pycolmap wheels (auto-detects all Python 3.9+ versions)
+# 1. Build pycolmap wheels (auto-detects all Python 3.9+ versions;
+#    builds its own COLMAP from colmap-for-pycolmap)
 .\scripts_windows\build_pycolmap_wheels.ps1
 
-# 3. Install the wheel for your Python version
+# 2. Install the wheel for your Python version
 pip install third_party\colmap-for-pycolmap\wheelhouse\pycolmap-*.whl
 
-# 4. Test installation
+# 3. Test installation
 python -c "import pycolmap; print(pycolmap.__version__)"
 ```
 
 ### Linux
 
 ```bash
-# 1. Build COLMAP
-./scripts_linux/build_colmap.sh
+# 1. Build pycolmap wheels (auto-detects all Python 3.9+ versions;
+#    builds its own COLMAP from colmap-for-pycolmap)
+./scripts_linux/build_pycolmap_wheels.sh
 
-# 2. Build pycolmap wheel
-./scripts_linux/build_pycolmap_wheel.sh
+# 2. Install the wheel for your Python version
+pip install third_party/colmap-for-pycolmap/wheelhouse/pycolmap-*.whl
 
-# 3. Install the wheel
-pip install third_party/colmap/wheelhouse/pycolmap-*.whl
-
-# 4. Test installation
+# 3. Test installation
 python3 -c "import pycolmap; print(pycolmap.__version__)"
+```
+
+**Linux single-version alternative** (builds against the regular COLMAP tree — run `./scripts_linux/build_colmap.sh` first):
+
+```bash
+./scripts_linux/build_pycolmap_wheel.sh
+pip install third_party/colmap/wheelhouse/pycolmap-*.whl
 ```
 
 ## Build Process Details
@@ -283,10 +286,8 @@ winget install Python.Python.3.13
 
 **Build script (all Python versions)**
 ```bash
-# Build COLMAP first
-./scripts_linux/build_colmap.sh
-
 # Build wheels for ALL installed Python versions (3.9+)
+# (no prior COLMAP build needed — it builds colmap-for-pycolmap itself)
 ./scripts_linux/build_pycolmap_wheels.sh
 
 # Build without CUDA for all versions
@@ -323,22 +324,14 @@ sudo apt-get install python3.12 python3.12-dev
 
 ### Manual Single-Version Build
 
-If you need to build for a specific Python version only (Windows):
+If you need a wheel for a specific Python version only:
 
-```powershell
-# Ensure only the desired Python version is in PATH
-# The script will detect and use the first Python 3.9+ it finds
+**Windows:** `build_pycolmap_wheels.ps1` has no single-version flag — it builds a wheel for every Python 3.9+ it can find via the `py` launcher, PATH, and common install directories (modifying PATH does not limit it). Either let it build everything and install only the wheel you need from the wheelhouse, or temporarily uninstall/hide the interpreters you don't want built.
 
-# Option 1: Temporarily modify PATH
-$env:PATH = "C:\Python310;$env:PATH"
-.\scripts_windows\build_pycolmap_wheels.ps1
-
-# Option 2: Install required Python versions selectively
-# The script automatically builds for all detected versions
-```
+**Linux:** use the single-version script (requires the regular COLMAP tree built via `build_colmap.sh`):
 
 ```bash
-# Linux - Use version-specific python commands
+# Use version-specific python commands
 python3.10 -m pip install build auditwheel
 # Temporarily add Python 3.10 to PATH, then run:
 ./scripts_linux/build_pycolmap_wheel.sh
