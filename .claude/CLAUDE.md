@@ -26,7 +26,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ./scripts_linux/verify_build_environment.sh
 ```
 
-**Note:** All build scripts automatically initialize required submodules and bootstrap vcpkg if not already done. You can start building immediately after cloning the repository.
+**Note:** The main build scripts (`build.ps1`/`build.sh`, `build_colmap.ps1`/`build_colmap.sh`, `build_pycolmap_wheels.ps1`/`build_pycolmap_wheels.sh`) automatically initialize required submodules and bootstrap vcpkg if not already done, so you can start building immediately after cloning. Exceptions: `build_ceres.ps1`/`build_ceres.sh` and `build_pycolmap_wheel.sh` do NOT self-initialize — run a main build script first, or initialize submodules manually.
 
 ### Building
 
@@ -47,7 +47,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 # Linux
-./scripts_linux/build.sh --config Release
+./scripts_linux/build.sh Release
 ./scripts_linux/build_colmap.sh
 ./scripts_linux/build.sh --no-cuda
 ./scripts_linux/build.sh --clean
@@ -245,7 +245,7 @@ This means users can:
 **Submodule Requirements:**
 - `build_colmap.ps1`: vcpkg, ceres-solver, colmap
 - `build.ps1`: vcpkg, ceres-solver, colmap
-- For colmap-for-pycolmap: manually initialize with `git submodule update --init --recursive third_party/colmap-for-pycolmap`
+- `build_pycolmap_wheels.ps1` / `build_pycolmap_wheels.sh`: vcpkg, colmap-for-pycolmap (both auto-initialized by the scripts)
 
 ### Modifying Build Scripts
 - **Windows scripts:** `scripts_windows/*.ps1`
@@ -261,7 +261,7 @@ This means users can:
 
 ### Patching Dependencies
 Use `overlay-ports/` for vcpkg port modifications:
-- Example: `overlay-ports/suitesparse/portfile.cmake` adds CUDA support
+- Example: `overlay-ports/suitesparse-cholmod/` and `overlay-ports/suitesparse-spqr/` patch SuiteSparse components to not override CUDA architectures
 - Overlays are automatically applied via `VCPKG_OVERLAY_PORTS` CMake variable
 
 ### Testing Builds
@@ -277,9 +277,12 @@ Use `overlay-ports/` for vcpkg port modifications:
 ```
 
 ### Updating Submodules
+
+**Warning:** Do NOT use `git submodule update --remote --recursive` — the `--recursive` propagates `--remote` into Ceres's nested pinned submodules (abseil-cpp, googletest) and silently advances them past their pins. Also note the build patches `third_party/ceres-solver/cmake/FindSuiteSparse.cmake` in place; restore it before updating that submodule (`git -C third_party/ceres-solver checkout -- cmake/FindSuiteSparse.cmake`).
+
 ```bash
-# Update all submodules to latest commits
-git submodule update --remote --recursive
+# Update a top-level submodule to its remote branch tip (non-recursive)
+git submodule update --remote third_party/colmap
 
 # Update specific submodule
 cd third_party/colmap
