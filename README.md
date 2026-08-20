@@ -226,7 +226,7 @@ See [CLAUDE.md](.claude/CLAUDE.md) for detailed build instructions.
 ./scripts_linux/build.sh Release
 ```
 
-**Pre-fetching learned-feature models:** builds with download support fetch the ALIKED/LightGlue ONNX models on first use. From a repo clone, you can pre-fetch the ALIKED-family models into the cache (e.g. for offline machines) with `.\scripts_windows\download_models.ps1` or `./scripts_linux/download_models.sh`.
+**Pre-fetching learned-feature models:** builds with download support fetch the ALIKED/LightGlue ONNX models on first use. From a repo clone, you can pre-fetch all default learned-feature models (ALIKED extractors, ALIKED/SIFT LightGlue matchers, brute-force matcher) into the cache — e.g. for offline machines — with `.\scripts_windows\download_models.ps1` or `./scripts_linux/download_models.sh`.
 
 ## License
 

@@ -37,6 +37,7 @@ while [[ $# -gt 0 ]]; do
             echo "  - aliked-n16rot.onnx     ALIKED N16ROT feature extractor"
             echo "  - aliked-n32.onnx        ALIKED N32 feature extractor"
             echo "  - aliked-lightglue.onnx  ALIKED LightGlue feature matcher"
+            echo "  - sift-lightglue.onnx    SIFT LightGlue feature matcher"
             echo "  - bruteforce-matcher.onnx  Brute-force ONNX matcher"
             exit 0
             ;;
@@ -54,6 +55,7 @@ MODELS=(
     "aliked-n16rot.onnx 39c423d0a6f03d39ec89d3d1d61853765c2fb6a8b8381376c703e5758778a547"
     "aliked-n32.onnx a077728a02d2de1a775c66df6de8cfeb7c6b51ca57572c64c680131c988c8b3c"
     "aliked-lightglue.onnx b9a5de7204648b18a8cf5dcac819f9d30de1a5961ef03756803c8b86c2dceb8d"
+    "sift-lightglue.onnx e0500228472b43f92b3d36881a09b3310d3b058b56187b246cc7b9ab6429096e"
     "bruteforce-matcher.onnx 3c1282f96d83f5ffc861a873298d08bbe5219f59af59223f5ceab5c41a182a47"
 )
 
@@ -135,6 +137,7 @@ echo '  MODELS = {'
 echo '      "aliked-n16rot.onnx": "39c423d0a6f03d39ec89d3d1d61853765c2fb6a8b8381376c703e5758778a547",'
 echo '      "aliked-n32.onnx": "a077728a02d2de1a775c66df6de8cfeb7c6b51ca57572c64c680131c988c8b3c",'
 echo '      "aliked-lightglue.onnx": "b9a5de7204648b18a8cf5dcac819f9d30de1a5961ef03756803c8b86c2dceb8d",'
+echo '      "sift-lightglue.onnx": "e0500228472b43f92b3d36881a09b3310d3b058b56187b246cc7b9ab6429096e",'
 echo '      "bruteforce-matcher.onnx": "3c1282f96d83f5ffc861a873298d08bbe5219f59af59223f5ceab5c41a182a47",'
 echo '  }'
 echo ''
