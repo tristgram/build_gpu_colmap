@@ -37,6 +37,12 @@ on:
         type: string
         default: ''
 
+env:
+  # vcpkg binary caching via the GitHub Actions cache backend. Workflow-level
+  # so the manifest install run by CMake configure (not just Setup vcpkg)
+  # sees it. Requires the ACTIONS_* exports step in each job.
+  VCPKG_BINARY_SOURCES: 'clear;x-gha,readwrite'
+
 jobs:
   build-wheels:
     name: py${{ matrix.python-version }} ${{ matrix.os }} ${{ matrix.cuda && matrix.bundle_cuda && format('CUDA{0}-bundled', matrix.cuda_version) || matrix.cuda && matrix.cudss && format('CUDA{0}+cuDSS', matrix.cuda_version) || matrix.cuda && format('CUDA{0}', matrix.cuda_version) || 'CPU' }}
@@ -515,13 +521,19 @@ jobs:
           echo "/usr/lib/ccache" >> $GITHUB_PATH
 
       # ==================== vcpkg Setup ====================
+      - name: Export GitHub Actions cache env for vcpkg
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RESULTS_URL', process.env.ACTIONS_RESULTS_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
         with:
           vcpkgDirectory: '${{ github.workspace }}/third_party/vcpkg'
           vcpkgJsonGlob: 'vcpkg.json'
-        env:
-          VCPKG_BINARY_SOURCES: 'clear;default,readwrite'
 
       # ==================== Build COLMAP-for-pycolmap ====================
       - name: Build COLMAP-for-pycolmap (Windows)
