@@ -534,7 +534,11 @@ for entry in "${VALID_PYTHONS[@]}"; do
     python_dir=$(dirname "$(command -v "$python_cmd")")
     export PATH="$python_dir:$ORIGINAL_PATH"
 
+    # Suspend errexit in the parent so a failing version doesn't abort the
+    # whole loop (the summary below reports it); the subshell re-enables it
+    set +e
     (
+        set -e
         # Build wheel using pip and scikit-build-core
         echo -e "  ${DARK_GRAY}Installing/upgrading build tools...${NC}"
         "$python_cmd" -m pip install --quiet --upgrade pip setuptools wheel
@@ -694,6 +698,7 @@ for entry in "${VALID_PYTHONS[@]}"; do
     )
 
     BUILD_RESULT=$?
+    set -e
 
     # Restore original PATH
     export PATH="$ORIGINAL_PATH"
