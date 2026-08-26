@@ -53,7 +53,9 @@ jobs:
           # Caspar is deliberately OFF: Intake solves with the OPENCV camera model, which Caspar
           # does not support, and dropping it also drops the Symforce LGPL-adjacent code from the
           # shipped binary. Ceres master + cuDSS provides the (verified 9.7x) GPU bundle adjustment.
-          - os: windows-2022
+          # windows-2025 (2026-08-26): windows-2022 is in its retirement brownout window - dispatches
+          # sat queued and the run failed at startup. The 2025 image carries the same VS2022 toolchain.
+          - os: windows-2025
             cuda: true
             cuda_version: '12.8.1'
             cudss: true
